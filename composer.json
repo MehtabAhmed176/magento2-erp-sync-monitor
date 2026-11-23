@@ -1,0 +1,15 @@
+{
+  "name": "ahmed/module-erp-sync-monitor",
+  "description": "Outbox based ERP sync monitor with queue retries and admin grid for Magento 2",
+  "type": "magento2-module",
+  "license": "MIT",
+  "require": {
+    "php": "~8.2.0||~8.3.0",
+    "magento/framework": "*",
+    "magento/module-sales": "*"
+  },
+  "autoload": {
+    "files": ["registration.php"],
+    "psr-4": { "Ahmed\\ErpSyncMonitor\\": "" }
+  }
+}
