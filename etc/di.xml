@@ -5,4 +5,6 @@
                 type="Ahmed\ErpSyncMonitor\Model\SyncItem"/>
     <preference for="Ahmed\ErpSyncMonitor\Api\SyncItemRepositoryInterface"
                 type="Ahmed\ErpSyncMonitor\Model\SyncItemRepository"/>
+    <preference for="Ahmed\ErpSyncMonitor\Api\ErpClientInterface"
+                type="Ahmed\ErpSyncMonitor\Model\FakeErpClient"/>
 </config>

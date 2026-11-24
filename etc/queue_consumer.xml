@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/consumer.xsd">
+    <consumer name="ahmed.erp.sync.consumer"
+              queue="ahmed.erp.sync.item"
+              connection="db"
+              handler="Ahmed\ErpSyncMonitor\Model\Queue\SyncItemConsumer::process"/>
+</config>
