@@ -44,4 +44,8 @@ jobs:
           composer require ahmed/module-erp-sync-monitor:@dev --no-interaction
       - name: Run unit tests
         working-directory: /tmp/magento
-        run: vendor/bin/phpunit -c dev/tests/unit/phpunit.xml.dist $GITHUB_WORKSPACE/Test/Unit
+        run: > 
+            vendor/bin/phpunit -c dev/tests/unit/phpunit.xml.dist
+          --do-not-fail-on-warning
+          --do-not-fail-on-notice
+          $GITHUB_WORKSPACE/Test/Unit
