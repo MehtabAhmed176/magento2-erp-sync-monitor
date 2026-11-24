@@ -9,6 +9,7 @@ use Ahmed\ErpSyncMonitor\Api\SyncItemRepositoryInterface;
 use Ahmed\ErpSyncMonitor\Model\Status;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\MessageQueue\PublisherInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\LoggerInterface;
 
 class SyncItemConsumer

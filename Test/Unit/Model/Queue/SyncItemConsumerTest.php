@@ -129,10 +129,22 @@ class SyncItemConsumerTest extends TestCase
         $this->assertSame('ERP down', $item->getLastError());
     }
 
-    /**
-     * @dataProvider nonPendingStatusProvider
-     */
-    public function testRedeliveredMessageForNonPendingItemIsIgnored(string $status): void
+    public function testRedeliveredDoneItemIsIgnored(): void
+    {
+        $this->assertRedeliveryIsIgnored(Status::DONE);
+    }
+
+    public function testRedeliveredFailedItemIsIgnored(): void
+    {
+        $this->assertRedeliveryIsIgnored(Status::FAILED);
+    }
+
+    public function testRedeliveredProcessingItemIsIgnored(): void
+    {
+        $this->assertRedeliveryIsIgnored(Status::PROCESSING);
+    }
+
+    private function assertRedeliveryIsIgnored(string $status): void
     {
         $this->givenItem($status, 0);
         $this->erpClient->expects($this->never())->method('send');
@@ -141,15 +153,6 @@ class SyncItemConsumerTest extends TestCase
         $this->consumer->process(self::ITEM_ID);
 
         $this->assertSame([], $this->savedStatuses);
-    }
-
-    public static function nonPendingStatusProvider(): array
-    {
-        return [
-            'done' => [Status::DONE],
-            'failed' => [Status::FAILED],
-            'processing' => [Status::PROCESSING],
-        ];
     }
 
     public function testMessageForMissingItemIsDropped(): void

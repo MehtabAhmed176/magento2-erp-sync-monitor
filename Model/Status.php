@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Ahmed\ErpSyncMonitor\Model;
 
-final class Status
+class Status
 {
     public const PENDING = 'pending';
     public const PROCESSING = 'processing';
