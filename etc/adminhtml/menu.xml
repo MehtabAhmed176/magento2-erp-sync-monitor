@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Ahmed_ErpSyncMonitor::sync_items"
+             title="ERP Sync Items"
+             translate="title"
+             module="Ahmed_ErpSyncMonitor"
+             sortOrder="100"
+             parent="Magento_Sales::sales_operation"
+             action="ahmed_erp/sync/index"
+             resource="Ahmed_ErpSyncMonitor::sync_items"/>
+    </menu>
+</config>
