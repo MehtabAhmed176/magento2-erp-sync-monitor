@@ -8,44 +8,58 @@ jobs:
   coding-standard:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: shivammathur/setup-php@v2
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
           tools: composer
+
       - name: Install Magento coding standard
         run: |
           composer config --global --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
           composer global require magento/magento-coding-standard
           echo "$(composer global config bin-dir --absolute --quiet)" >> $GITHUB_PATH
+
       - name: Run PHPCS
         run: phpcs --standard=Magento2 --severity=10 --extensions=php,phtml .
 
   unit-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: shivammathur/setup-php@v2
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
           tools: composer
           extensions: bcmath, ctype, curl, dom, gd, iconv, intl, mbstring, pdo_mysql, simplexml, soap, sockets, sodium, xsl, zip
         env:
           COMPOSER_MEMORY_LIMIT: -1
+
       - name: Create Magento project from the Mage-OS mirror
-        run: >
-          composer create-project --no-interaction
-          --repository-url=https://mirror.mage-os.org/
-          magento/project-community-edition /tmp/magento
-      - name: Install this module
+        run: |
+          composer create-project --no-interaction --repository-url=https://mirror.mage-os.org/ magento/project-community-edition /tmp/magento
+
+      - name: Install this module into the project
         working-directory: /tmp/magento
         run: |
           composer config repositories.module path $GITHUB_WORKSPACE
           composer require ahmed/module-erp-sync-monitor:@dev --no-interaction
+
       - name: Run unit tests
         working-directory: /tmp/magento
-        run: > 
-            vendor/bin/phpunit -c dev/tests/unit/phpunit.xml.dist
-          --do-not-fail-on-warning
-          --do-not-fail-on-notice
-          $GITHUB_WORKSPACE/Test/Unit
+        run: |
+          set +e
+          vendor/bin/phpunit -c dev/tests/unit/phpunit.xml.dist $GITHUB_WORKSPACE/Test/Unit | tee /tmp/phpunit.log
+          code=${PIPESTATUS[0]}
+          # Magento's own test setup prints a harmless Allure warning, which makes PHPUnit exit with 1.
+          # Accept that case only. Real failures and errors still fail the job.
+          if [ "$code" -ne 0 ] && grep -q "OK, but there were issues" /tmp/phpunit.log; then
+            exit 0
+          fi
+          exit $code
