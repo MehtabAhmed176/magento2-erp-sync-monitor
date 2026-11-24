@@ -1,0 +1,22 @@
+{
+    "ahmed_erp_sync_item": {
+        "column": {
+            "item_id": true,
+            "entity_type": true,
+            "entity_id": true,
+            "status": true,
+            "attempts": true,
+            "last_error": true,
+            "payload": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "AHMED_ERP_SYNC_ITEM_STATUS": true,
+            "AHMED_ERP_SYNC_ITEM_ENTITY_TYPE_ENTITY_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}
