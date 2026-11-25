@@ -2,7 +2,7 @@
 
 A Magento 2 module that sends orders to an ERP **reliably**, using the outbox pattern, a message queue, automatic retries and an admin grid to see and fix failures.
 
-![CI](https://github.com/YOUR_USERNAME/magento2-erp-sync-monitor/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/MehtabAhmed176/magento2-erp-sync-monitor/actions/workflows/ci.yml/badge.svg)
 ![Magento](https://img.shields.io/badge/Magento-2.4.8-orange)
 ![PHP](https://img.shields.io/badge/PHP-8.3-blue)
 
@@ -40,12 +40,12 @@ sequenceDiagram
 
 What goes wrong:
 
-| Risk | Result |
-| --- | --- |
-| ERP is down | Checkout is slow or fails, the customer leaves |
-| ERP call fails after the order is saved | The order exists in Magento but never reaches the ERP, and nobody knows |
-| Temporary network problem | A one second glitch becomes a permanently lost order |
-| Someone asks "did order 4 reach the ERP?" | No answer, because nothing was recorded |
+| Risk                                      | Result                                                                  |
+| ----------------------------------------- | ----------------------------------------------------------------------- |
+| ERP is down                               | Checkout is slow or fails, the customer leaves                          |
+| ERP call fails after the order is saved   | The order exists in Magento but never reaches the ERP, and nobody knows |
+| Temporary network problem                 | A one second glitch becomes a permanently lost order                    |
+| Someone asks "did order 4 reach the ERP?" | No answer, because nothing was recorded                                 |
 
 ---
 
@@ -97,12 +97,12 @@ sequenceDiagram
 
 What changes:
 
-| Before | After |
-| --- | --- |
-| Checkout waits for the ERP | Checkout never touches the ERP |
-| Failures are invisible | Every attempt, error and status is stored |
-| One glitch loses an order | Automatic retries absorb temporary errors |
-| No way to fix a failure | Admin grid with a Retry mass action |
+| Before                     | After                                     |
+| -------------------------- | ----------------------------------------- |
+| Checkout waits for the ERP | Checkout never touches the ERP            |
+| Failures are invisible     | Every attempt, error and status is stored |
+| One glitch loses an order  | Automatic retries absorb temporary errors |
+| No way to fix a failure    | Admin grid with a Retry mass action       |
 
 ---
 
@@ -135,19 +135,19 @@ flowchart LR
 
 ### Components
 
-| Part | Location | Responsibility |
-| --- | --- | --- |
-| Service contracts | `Api/`, `Api/Data/` | Public interfaces: `SyncItemInterface`, `SyncItemRepositoryInterface`, ERP client interface |
-| Model, resource model, collection | `Model/` | Persistence of sync items |
-| Repository | `Model/SyncItemRepository.php` | Save, load, list, delete. Converts DB errors to Magento exceptions |
-| Status constants | `Model/Status.php` | `pending`, `processing`, `done`, `failed` |
-| Observer | `etc/events.xml` | Reacts to a placed order, creates the sync item and publishes it |
-| Queue config | `etc/communication.xml`, `queue_*.xml` | Topic `ahmed.erp.sync.item`, consumer `ahmed.erp.sync.consumer` |
-| Consumer handler | `Model/Queue/` | Sends to the ERP, updates status, retries or gives up |
-| ERP client | `Model/` | `FakeErpClient` (fails about 40 percent of the time) behind an interface |
-| Retry service | `Model/Retry/RetryService.php` | Resets failed items to pending and publishes them again |
-| Admin UI | `Controller/Adminhtml/`, `view/adminhtml/` | Grid, filters, Retry mass action, ACL |
-| Tests | `Test/Unit/` | Handler paths (success, retry, final failure) and the retry service |
+| Part                              | Location                                       | Responsibility                                                                                  |
+| --------------------------------- | ---------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Service contracts                 | `Api/`, `Api/Data/`                        | Public interfaces: `SyncItemInterface`, `SyncItemRepositoryInterface`, ERP client interface |
+| Model, resource model, collection | `Model/`                                     | Persistence of sync items                                                                       |
+| Repository                        | `Model/SyncItemRepository.php`               | Save, load, list, delete. Converts DB errors to Magento exceptions                              |
+| Status constants                  | `Model/Status.php`                           | `pending`, `processing`, `done`, `failed`                                               |
+| Observer                          | `etc/events.xml`                             | Reacts to a placed order, creates the sync item and publishes it                                |
+| Queue config                      | `etc/communication.xml`, `queue_*.xml`     | Topic `ahmed.erp.sync.item`, consumer `ahmed.erp.sync.consumer`                             |
+| Consumer handler                  | `Model/Queue/`                               | Sends to the ERP, updates status, retries or gives up                                           |
+| ERP client                        | `Model/`                                     | `FakeErpClient` (fails about 40 percent of the time) behind an interface                      |
+| Retry service                     | `Model/Retry/RetryService.php`               | Resets failed items to pending and publishes them again                                         |
+| Admin UI                          | `Controller/Adminhtml/`, `view/adminhtml/` | Grid, filters, Retry mass action, ACL                                                           |
+| Tests                             | `Test/Unit/`                                 | Handler paths (success, retry, final failure) and the retry service                             |
 
 ### Status lifecycle
 
@@ -224,7 +224,7 @@ bin/magento cache:flush
 From GitHub:
 
 ```bash
-composer config repositories.erp-sync vcs https://github.com/YOUR_USERNAME/magento2-erp-sync-monitor
+composer config repositories.erp-sync vcs https://github.com/MehtabAhmed176/magento2-erp-sync-monitor
 composer require ahmed/module-erp-sync-monitor:dev-main
 ```
 
